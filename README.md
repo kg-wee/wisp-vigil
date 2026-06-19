@@ -1,8 +1,18 @@
 # Wisp's Vigil
 
-A small **Phaser 3** medieval fantasy survival game — guide a wisp through balefire wraiths for 90 seconds, claim soul shards, choose weapon powers, and hold a ward.
+Wisp's Vigil is a compact **Phaser 3** medieval fantasy survival game. Guide an arcane wisp through a shrinking ward, dodge wraiths and Ember Archers, gather soul shards, choose power-ups, and survive the Balefire Lord's arrival.
 
-Built as a **multi-agent-friendly** layout for Cursor (see `docs/GDD.md` and `.cursor/`).
+Play on GitHub Pages:
+
+https://kg-wee.github.io/wisp-vigil/
+
+## Gameplay
+
+- Survive a 90-second round while the ward closes in.
+- Collect soul shards to gain glory and unlock power-up choices.
+- Auto-fire arcane bolts at nearby enemies while you focus on movement.
+- Manage vitality and plating pickups to stay alive.
+- Face the Balefire Lord in the final phase.
 
 ## Quick start
 
@@ -11,50 +21,40 @@ npm install
 npm run dev
 ```
 
-Open http://localhost:5173 — click or **SPACE** to start.
+Open http://localhost:5173, then click or press **SPACE** to start.
 
 ## Controls
 
 | Input | Action |
-|--------|--------|
+|-------|--------|
 | WASD / arrows | Move |
 | Mouse / touch | Move toward pointer |
 | Q / Menu button | Resume, restart, mute, and inspect pickups |
 | 1 / 2 / 3 | Choose a power-up |
-
-## Project layout
-
-```
-src/game/       # rules, spawners, state, Phaser config
-src/scenes/     # Boot, Menu, Game, GameOver
-src/ui/         # HUD and overlay text
-src/assets/     # procedural textures, Web Audio SFX/music
-public/assets/  # source PNGs + packed entities.png
-docs/GDD.md     # design doc for agents
-.cursor/        # rules + subagents
-```
-
-## Next steps with Cursor agents
-
-1. **Plan:** extend `docs/GDD.md` (power-ups, boss wave, etc.)
-2. **game-logic subagent:** new hazard patterns in `src/game/`
-3. **ui-polish subagent:** particles, screen shake, better menus
-4. **Assets:** generate PNGs into `public/assets/sprites/`, load in `BootScene`
-5. **Parallel agents:** try two UI themes on worktrees, merge the winner
-
-## Spritesheet
-
-Edit `public/assets/sprites/player.png` (and hazard/pickup), then repack:
-
-```bash
-npm run pack:sprites
-```
-
-Builds `entities.png` (256×192): 4-frame player pulse, 4-frame hazard spin, 2-frame pickup glow. Strips opaque backgrounds from source PNGs so all frames use transparency.
 
 ## Build
 
 ```bash
 npm run build
 npm run preview
+```
+
+The production build is emitted to `dist/`.
+
+## Deployment
+
+The project deploys to GitHub Pages through `.github/workflows/deploy.yml`. Pushing to `main` runs the workflow, builds the Vite app, uploads `dist/`, and publishes the site.
+
+GitHub Pages should be configured with **Source: GitHub Actions**.
+
+## Project layout
+
+```text
+src/main.ts       # Phaser game bootstrap
+src/scenes/       # Boot, menu, gameplay, and game-over scenes
+src/game/         # Core rules, spawning, combat, pickups, and state
+src/ui/           # HUD, menus, overlays, and visual presentation helpers
+src/assets/       # Procedural textures, sprite helpers, and Web Audio
+public/assets/    # Runtime image assets loaded by the game
+docs/GDD.md       # Game design reference
 ```
