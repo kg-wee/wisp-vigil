@@ -1,0 +1,20 @@
+{
+  "name": "orb-dodge",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "pack:sprites": "node scripts/pack-entities.mjs",
+    "dev": "vite",
+    "build": "npm run pack:sprites && tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "phaser": "^3.88.2"
+  },
+  "devDependencies": {
+    "sharp": "^0.34.2",
+    "typescript": "^5.8.3",
+    "vite": "^6.3.5"
+  }
+}

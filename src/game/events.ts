@@ -1,0 +1,16 @@
+export const GameEvents = {
+  STATE_CHANGED: "state-changed",
+  PICKUP: "pickup",
+  HIT: "hit",
+  ARMOR_BREAK: "armor-break",
+  HEALTH_HURT: "health-hurt",
+  PLAYER_HEAL: "player-heal",
+  HAZARD_SPAWN: "hazard-spawn",
+  BOSS_SPAWN: "boss-spawn",
+  BOSS_SHOOT: "boss-shoot",
+  BOSS_DEFEATED: "boss-defeated",
+  OUT_OF_BOUNDS: "out-of-bounds",
+  ARCHER_SPAWN: "archer-spawn",
+  PLAYER_SHOOT: "player-shoot",
+  ENEMY_DEFEATED: "enemy-defeated",
+} as const;

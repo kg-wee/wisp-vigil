@@ -1,0 +1,32 @@
+---
+description: Wisp's Vigil Phaser project conventions
+globs:
+  - "**/*"
+alwaysApply: true
+---
+
+# Wisp's Vigil (Phaser 3 + Vite + TypeScript)
+
+## Stack
+- Phaser 3.88+, Vite 6, strict TypeScript
+- World size: 800×600 (`src/game/state.ts`)
+
+## Boundaries
+- **Game rules & spawners:** `src/game/**` only
+- **Damage pipeline:** `src/game/PlayerDamage.ts`
+- **Phaser scenes:** `src/scenes/**` — orchestration only
+- **HUD & juice:** `src/ui/**` — reads `GameState`; no spawn/score rules
+- **Assets:** `src/assets/**`; binaries in `public/assets/`
+
+## State (`GameState`)
+- `health`, `maxHealth`, `armor`, `maxArmor` (no legacy `shields`)
+- Single source: `src/game/state.ts`
+- Registry key: `gameState`
+
+## Spritesheet
+- `entities.png` 4×6 grid; run `npm run pack:sprites` after PNG changes
+- Pickup types: soul, vitality, plating — archer row 5
+- Boss/projectile/obstacle: separate PNGs
+
+## Commands
+- `npm run dev` / `npm run build` / `npm run pack:sprites`
