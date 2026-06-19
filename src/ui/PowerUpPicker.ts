@@ -18,6 +18,7 @@ export class PowerUpPicker {
     const w = this.scene.scale.width;
     const h = this.scene.scale.height;
     const touchScreen = this.scene.sys.game.device.input.touch;
+    const portrait = h > w;
     const objects: Phaser.GameObjects.GameObject[] = [];
 
     const shade = this.scene.add
@@ -25,41 +26,53 @@ export class PowerUpPicker {
       .setScrollFactor(0);
     objects.push(shade);
 
+    const panelW = portrait ? Math.min(w - 32, 440) : 650;
+    const panelH = portrait ? Math.min(h - 72, 700) : 330;
     const panel = this.scene.add
-      .rectangle(w / 2, h / 2, 650, 330, 0x1c1711, 0.97)
+      .rectangle(w / 2, h / 2, panelW, panelH, 0x1c1711, 0.97)
       .setStrokeStyle(2, 0xd4a84b, 0.85)
       .setScrollFactor(0);
     objects.push(panel);
 
     const title = this.scene.add
-      .text(w / 2, h / 2 - 132, "Choose a Power", {
+      .text(w / 2, h / 2 - panelH / 2 + 42, "Choose a Power", {
         fontFamily: fonts.title,
-        fontSize: "30px",
+        fontSize: portrait ? "27px" : "30px",
         color: colors.goldBright,
       })
       .setOrigin(0.5)
       .setScrollFactor(0);
     objects.push(title);
 
-    const cardW = 190;
-    const cardH = 190;
-    const gap = 18;
+    const cardW = portrait ? panelW - 48 : 190;
+    const cardH = portrait ? 150 : 190;
+    const gap = portrait ? 14 : 18;
     const totalW = choices.length * cardW + (choices.length - 1) * gap;
     const startX = w / 2 - totalW / 2 + cardW / 2;
+    const stackTop = h / 2 - panelH / 2 + 116;
     choices.forEach((choice, index) => {
-      const x = startX + index * (cardW + gap);
-      const y = h / 2 + 28;
+      const x = portrait ? w / 2 : startX + index * (cardW + gap);
+      const y = portrait
+        ? stackTop + index * (cardH + gap) + cardH / 2
+        : h / 2 + 28;
       const card = this.scene.add
-        .rectangle(x, y, cardW, cardH, choice.available ? 0x2a2420 : 0x201b18, 0.98)
+        .rectangle(
+          x,
+          y,
+          cardW,
+          cardH,
+          choice.available ? 0x2a2420 : 0x201b18,
+          0.98
+        )
         .setStrokeStyle(2, choice.available ? 0x8cb8d8 : 0x6a5c4a, 0.55)
         .setScrollFactor(0);
       if (choice.available) {
         card.setInteractive({ useHandCursor: true });
       }
       const number = this.scene.add
-        .text(x, y - 70, `${index + 1}`, {
+        .text(x, y - cardH / 2 + 28, `${index + 1}`, {
           fontFamily: fonts.hud,
-          fontSize: "20px",
+          fontSize: portrait ? "19px" : "20px",
           color: choice.available ? colors.ward : colors.mute,
         })
         .setOrigin(0.5)
@@ -67,7 +80,7 @@ export class PowerUpPicker {
       const name = this.scene.add
         .text(x, y - 24, choice.name, {
           fontFamily: fonts.hud,
-          fontSize: "18px",
+          fontSize: portrait ? "17px" : "18px",
           color: choice.available ? colors.parchment : colors.mute,
           align: "center",
           wordWrap: { width: cardW - 28 },
@@ -75,9 +88,9 @@ export class PowerUpPicker {
         .setOrigin(0.5)
         .setScrollFactor(0);
       const desc = this.scene.add
-        .text(x, y + 44, choice.description, {
+        .text(x, y + (portrait ? 34 : 44), choice.description, {
           fontFamily: fonts.body,
-          fontSize: "17px",
+          fontSize: portrait ? "16px" : "17px",
           color: choice.available ? colors.parchmentDim : colors.mute,
           align: "center",
           wordWrap: { width: cardW - 28 },
@@ -98,7 +111,7 @@ export class PowerUpPicker {
     const hint = this.scene.add
       .text(
         w / 2,
-        h / 2 + 146,
+        h / 2 + panelH / 2 - 28,
         touchScreen ? "Tap a power" : "Press 1, 2, or 3",
         {
           fontFamily: fonts.body,

@@ -28,6 +28,7 @@ export class Hud {
   private readonly vitalityBarBg: Phaser.GameObjects.Rectangle;
   private readonly vitalityBarFill: Phaser.GameObjects.Rectangle;
   private readonly bossBarX: number;
+  private readonly bossBarW: number;
   private readonly vitalityBarX: number;
   private lastScore = 0;
   private urgentTween?: Phaser.Tweens.Tween;
@@ -35,6 +36,7 @@ export class Hud {
   constructor(scene: Phaser.Scene) {
     const { colors } = FantasyTheme;
     const w = scene.scale.width;
+    this.bossBarW = Math.min(BOSS_BAR_W, w - 32);
 
     this.scoreText = scene.add.text(16, TOP_Y, "", STYLE).setDepth(10);
     this.timeText = scene.add
@@ -79,7 +81,7 @@ export class Hud {
       .setOrigin(0, 0)
       .setDepth(10);
 
-    this.bossBarX = w / 2 - BOSS_BAR_W / 2;
+    this.bossBarX = w / 2 - this.bossBarW / 2;
     this.bossLabel = scene.add
       .text(w / 2, BOSS_LABEL_Y, "", {
         ...STYLE,
@@ -90,11 +92,11 @@ export class Hud {
       .setDepth(10)
       .setVisible(false);
     this.bossBarBg = scene.add
-      .rectangle(w / 2, BOSS_BAR_Y, BOSS_BAR_W, 10, 0x2a1810, 0.85)
+      .rectangle(w / 2, BOSS_BAR_Y, this.bossBarW, 10, 0x2a1810, 0.85)
       .setDepth(10)
       .setVisible(false);
     this.bossBarFill = scene.add
-      .rectangle(this.bossBarX, BOSS_BAR_Y, BOSS_BAR_W, 10, 0xd45838)
+      .rectangle(this.bossBarX, BOSS_BAR_Y, this.bossBarW, 10, 0xd45838)
       .setOrigin(0, 0.5)
       .setDepth(11)
       .setVisible(false);
@@ -137,7 +139,7 @@ export class Hud {
     if (showBoss) {
       this.bossLabel.setText("Balefire Lord");
       const ratio = state.bossHp / state.bossMaxHp;
-      this.bossBarFill.width = BOSS_BAR_W * ratio;
+      this.bossBarFill.width = this.bossBarW * ratio;
       this.bossBarFill.x = this.bossBarX;
     }
   }

@@ -26,6 +26,9 @@ export class PauseMenu {
     const w = this.scene.scale.width;
     const h = this.scene.scale.height;
     const touchScreen = this.scene.sys.game.device.input.touch;
+    const portrait = h > w;
+    const panelW = portrait ? Math.min(w - 32, 440) : 500;
+    const panelH = portrait ? Math.min(h - 80, 640) : 430;
     const objects: Phaser.GameObjects.GameObject[] = [];
 
     objects.push(
@@ -35,16 +38,16 @@ export class PauseMenu {
     );
     objects.push(
       this.scene.add
-        .rectangle(w / 2, h / 2, 500, 430, 0x1c1711, 0.98)
+        .rectangle(w / 2, h / 2, panelW, panelH, 0x1c1711, 0.98)
         .setStrokeStyle(2, 0xd4a84b, 0.85)
         .setScrollFactor(0)
     );
 
     objects.push(
       this.scene.add
-        .text(w / 2, h / 2 - 125, "Vigil Menu", {
+        .text(w / 2, h / 2 - panelH / 2 + 48, "Vigil Menu", {
           fontFamily: fonts.title,
-          fontSize: "32px",
+          fontSize: portrait ? "30px" : "32px",
           color: colors.goldBright,
         })
         .setOrigin(0.5)
@@ -55,12 +58,12 @@ export class PauseMenu {
     objects.push(
       this.scene.add
         .text(
-          w / 2 - 128,
-          h / 2 - 45,
+          portrait ? w / 2 : w / 2 - 128,
+          h / 2 - (portrait ? 192 : 45),
           `Soul shards: ${pickups.soul}\nVitality: ${pickups.vitality}\nPlating: ${pickups.plating}`,
           {
             fontFamily: fonts.body,
-            fontSize: "21px",
+            fontSize: portrait ? "20px" : "21px",
             color: colors.parchment,
             align: "center",
           }
@@ -75,32 +78,41 @@ export class PauseMenu {
     }).join("\n");
     objects.push(
       this.scene.add
-        .text(w / 2 + 118, h / 2 - 48, upgradeText, {
-          fontFamily: fonts.body,
-          fontSize: "17px",
-          color: colors.parchment,
-          align: "left",
-        })
+        .text(
+          portrait ? w / 2 : w / 2 + 118,
+          h / 2 - (portrait ? 76 : 48),
+          upgradeText,
+          {
+            fontFamily: fonts.body,
+            fontSize: portrait ? "18px" : "17px",
+            color: colors.parchment,
+            align: portrait ? "center" : "left",
+          }
+        )
         .setOrigin(0.5)
         .setScrollFactor(0)
     );
 
-    objects.push(this.createButton(w / 2, h / 2 + 86, "Resume", onResume));
+    const firstButtonY = h / 2 + (portrait ? 110 : 86);
+    const buttonGap = portrait ? 58 : 50;
+    objects.push(this.createButton(w / 2, firstButtonY, "Resume", onResume));
     objects.push(
       this.createButton(
         w / 2,
-        h / 2 + 136,
+        firstButtonY + buttonGap,
         state.muted ? "Unmute" : "Mute",
         onToggleMute
       )
     );
-    objects.push(this.createButton(w / 2, h / 2 + 186, "Restart", onRestart));
+    objects.push(
+      this.createButton(w / 2, firstButtonY + buttonGap * 2, "Restart", onRestart)
+    );
 
     objects.push(
       this.scene.add
         .text(
           w / 2,
-          h / 2 + 207,
+          h / 2 + panelH / 2 - 28,
           touchScreen ? "Tap Resume to continue" : "Q: resume",
           {
             fontFamily: fonts.body,

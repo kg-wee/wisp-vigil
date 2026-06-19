@@ -23,15 +23,17 @@ export function drawArenaBackdrop(scene: Phaser.Scene): void {
   }
 
   const ward = scene.add.graphics().setDepth(1);
+  const wardOuter = Math.min(WORLD_WIDTH, WORLD_HEIGHT) * 0.32;
+  const wardInner = wardOuter * 0.73;
   ward.lineStyle(2, FantasyTheme.colors.goldHex, 0.12);
   const cx = WORLD_WIDTH / 2;
   const cy = WORLD_HEIGHT / 2;
-  ward.strokeCircle(cx, cy, 220);
+  ward.strokeCircle(cx, cy, wardOuter);
   ward.lineStyle(1, FantasyTheme.colors.arcaneHex, 0.08);
-  ward.strokeCircle(cx, cy, 160);
+  ward.strokeCircle(cx, cy, wardInner);
 
   const vignette = scene.add.graphics().setDepth(2);
-  const edge = 120;
+  const edge = Math.min(WORLD_WIDTH, WORLD_HEIGHT) * 0.15;
   vignette.fillStyle(0x0a0806, 0.55);
   vignette.fillRect(0, 0, WORLD_WIDTH, edge);
   vignette.fillRect(0, WORLD_HEIGHT - edge, WORLD_WIDTH, edge);

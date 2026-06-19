@@ -78,8 +78,13 @@ export const ARCHER_KILL_SCORE = 25;
 export const SOUL_PICKUP_SCORE = 35;
 export const FIRST_UPGRADE_SCORE = 75;
 
-export const WORLD_WIDTH = 800;
-export const WORLD_HEIGHT = 600;
+export let WORLD_WIDTH = 800;
+export let WORLD_HEIGHT = 600;
+
+export function configureWorldSize(width: number, height: number): void {
+  WORLD_WIDTH = width;
+  WORLD_HEIGHT = height;
+}
 
 /** Max inset from world edges when the ward fully shrinks. */
 export const ARENA_SHRINK_MARGIN_MAX = 130;
