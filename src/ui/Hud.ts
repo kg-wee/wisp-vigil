@@ -4,15 +4,15 @@ import { FantasyTheme } from "./theme";
 
 const STYLE: Phaser.Types.GameObjects.Text.TextStyle = {
   fontFamily: FantasyTheme.fonts.hud,
-  fontSize: "18px",
+  fontSize: "21px",
   color: FantasyTheme.colors.parchment,
 };
 
 const TOP_Y = 12;
-const VITALITY_Y = 34;
-const VITALITY_BAR_W = 72;
-const VITALITY_BAR_H = 8;
-const PLATING_Y = 48;
+const VITALITY_Y = 38;
+const VITALITY_BAR_W = 88;
+const VITALITY_BAR_H = 10;
+const PLATING_Y = 54;
 const BOSS_LABEL_Y = 52;
 const BOSS_BAR_Y = 66;
 const BOSS_BAR_W = 220;
@@ -65,14 +65,14 @@ export class Hud {
       .setDepth(11);
 
     this.platingText = scene.add
-      .text(16, PLATING_Y, "", { ...STYLE, fontSize: "15px" })
+      .text(16, PLATING_Y, "", { ...STYLE, fontSize: "16px" })
       .setOrigin(0, 0)
       .setDepth(10);
 
     this.levelText = scene.add
       .text(16, PLATING_Y + 18, "", {
         ...STYLE,
-        fontSize: "13px",
+        fontSize: "15px",
         fontFamily: FantasyTheme.fonts.body,
         color: colors.parchmentDim,
       })

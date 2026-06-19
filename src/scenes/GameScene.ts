@@ -50,6 +50,8 @@ export class GameScene extends Phaser.Scene {
   };
   private pointerTarget: Phaser.Math.Vector2 | null = null;
   private pointerActive = false;
+  private dragStartPointer: Phaser.Math.Vector2 | null = null;
+  private dragStartPlayer: Phaser.Math.Vector2 | null = null;
   private state!: GameState;
   private hud!: Hud;
   private arena!: ArenaBounds;
@@ -249,14 +251,18 @@ export class GameScene extends Phaser.Scene {
       this.audio.startMusic(this.state.muted);
       if (this.state.upgradeChoicesOpen || this.menuOpen) return;
       this.pointerActive = true;
-      this.pointerTarget = new Phaser.Math.Vector2(p.worldX, p.worldY);
+      this.dragStartPointer = new Phaser.Math.Vector2(p.worldX, p.worldY);
+      this.dragStartPlayer = new Phaser.Math.Vector2(this.player.x, this.player.y);
+      this.pointerTarget = this.dragStartPlayer.clone();
     });
     this.input.on("pointerup", () => {
-      this.pointerActive = false;
+      this.stopPointerDrag();
+    });
+    this.input.on("pointerupoutside", () => {
+      this.stopPointerDrag();
     });
     this.input.on("pointermove", (p: Phaser.Input.Pointer) => {
-      if (!this.pointerActive) return;
-      this.pointerTarget = new Phaser.Math.Vector2(p.worldX, p.worldY);
+      this.updatePointerDrag(p);
     });
     this.input.keyboard?.on("keydown", () => this.audio.unlock());
     this.input.keyboard?.on("keydown", () => this.audio.startMusic(this.state.muted));
@@ -264,6 +270,23 @@ export class GameScene extends Phaser.Scene {
 
     this.events.emit(GameEvents.STATE_CHANGED, this.state);
     this.audio.startMusic(this.state.muted);
+  }
+
+  private updatePointerDrag(p: Phaser.Input.Pointer): void {
+    if (!this.pointerActive || !this.dragStartPointer || !this.dragStartPlayer) return;
+
+    const target = new Phaser.Math.Vector2(
+      this.dragStartPlayer.x + (p.worldX - this.dragStartPointer.x),
+      this.dragStartPlayer.y + (p.worldY - this.dragStartPointer.y)
+    );
+    this.pointerTarget = target;
+  }
+
+  private stopPointerDrag(): void {
+    this.pointerActive = false;
+    this.pointerTarget = null;
+    this.dragStartPointer = null;
+    this.dragStartPlayer = null;
   }
 
   update(_time: number, delta: number): void {
@@ -675,21 +698,21 @@ export class GameScene extends Phaser.Scene {
 
   private createMenuButton(): Phaser.GameObjects.Container {
     const { colors, fonts } = FantasyTheme;
-    const x = this.scale.width - 58;
-    const y = this.scale.height - 38;
+    const x = this.scale.width - 66;
+    const y = this.scale.height - 48;
     const bg = this.add
-      .rectangle(0, 0, 86, 34, 0x2a2420, 0.88)
+      .rectangle(0, 0, 104, 46, 0x2a2420, 0.9)
       .setStrokeStyle(1, 0x8cb8d8, 0.55);
     const label = this.add
       .text(0, 0, "Menu", {
         fontFamily: fonts.hud,
-        fontSize: "14px",
+        fontSize: "16px",
         color: colors.parchment,
       })
       .setOrigin(0.5);
     const button = this.add
       .container(x, y, [bg, label])
-      .setSize(86, 34)
+      .setSize(104, 46)
       .setDepth(20)
       .setScrollFactor(0)
       .setInteractive({ useHandCursor: true });
@@ -713,7 +736,7 @@ export class GameScene extends Phaser.Scene {
       return;
     }
     this.menuOpen = true;
-    this.pointerActive = false;
+    this.stopPointerDrag();
     this.physics.world.pause();
     this.player.setVelocity(0, 0);
     this.pauseMenu.show(
@@ -770,6 +793,7 @@ export class GameScene extends Phaser.Scene {
     if (!hasAvailablePowerUps(this.state)) return;
 
     this.state.upgradeChoicesOpen = true;
+    this.stopPointerDrag();
     this.offeredPowerUps = choosePowerUps(this.state, 3, () =>
       Phaser.Math.FloatBetween(0, 1)
     );

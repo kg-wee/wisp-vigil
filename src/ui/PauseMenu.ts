@@ -25,6 +25,7 @@ export class PauseMenu {
     const { colors, fonts } = FantasyTheme;
     const w = this.scene.scale.width;
     const h = this.scene.scale.height;
+    const touchScreen = this.scene.sys.game.device.input.touch;
     const objects: Phaser.GameObjects.GameObject[] = [];
 
     objects.push(
@@ -97,11 +98,16 @@ export class PauseMenu {
 
     objects.push(
       this.scene.add
-        .text(w / 2, h / 2 + 207, "Q: resume", {
-          fontFamily: fonts.body,
-          fontSize: "15px",
-          color: colors.mute,
-        })
+        .text(
+          w / 2,
+          h / 2 + 207,
+          touchScreen ? "Tap Resume to continue" : "Q: resume",
+          {
+            fontFamily: fonts.body,
+            fontSize: "15px",
+            color: colors.mute,
+          }
+        )
         .setOrigin(0.5)
         .setScrollFactor(0)
     );
@@ -122,7 +128,7 @@ export class PauseMenu {
   ): Phaser.GameObjects.Container {
     const { colors, fonts } = FantasyTheme;
     const bg = this.scene.add
-      .rectangle(0, 0, 180, 42, 0x2a2420, 0.98)
+      .rectangle(0, 0, 196, 48, 0x2a2420, 0.98)
       .setStrokeStyle(2, 0x8cb8d8, 0.65);
     const text = this.scene.add
       .text(0, 0, label, {
@@ -133,7 +139,7 @@ export class PauseMenu {
       .setOrigin(0.5);
     const button = this.scene.add
       .container(x, y, [bg, text])
-      .setSize(180, 42)
+      .setSize(196, 48)
       .setScrollFactor(0)
       .setInteractive({ useHandCursor: true });
     button.on("pointerover", () => bg.setStrokeStyle(3, 0xf0d080, 1));

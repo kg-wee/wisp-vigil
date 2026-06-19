@@ -34,8 +34,8 @@ export const FantasyTheme = {
   copy: {
     gameTitle: "WISP'S VIGIL",
     menuBody:
-      "Hold the ward for 90 seconds.\nArcane bolts auto-seek the nearest foe.\nGather glory to choose weapon powers.\nAt the last sands, slay the Balefire Lord.\nWASD or arrows · Hold click/touch to steer",
-    menuStart: "Press SPACE or click to begin the vigil",
+      "Hold the ward for 90 seconds.\nArcane bolts auto-seek the nearest foe.\nGather glory to choose weapon powers.\nAt the last sands, slay the Balefire Lord.\nDrag a finger or use WASD/arrows to move",
+    menuStart: "Tap or press SPACE to begin the vigil",
     hudScore: "Glory",
     hudTime: "Sands",
     hudVitality: "Vitality",

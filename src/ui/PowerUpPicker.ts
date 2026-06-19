@@ -17,6 +17,7 @@ export class PowerUpPicker {
     const { colors, fonts } = FantasyTheme;
     const w = this.scene.scale.width;
     const h = this.scene.scale.height;
+    const touchScreen = this.scene.sys.game.device.input.touch;
     const objects: Phaser.GameObjects.GameObject[] = [];
 
     const shade = this.scene.add
@@ -95,11 +96,16 @@ export class PowerUpPicker {
     });
 
     const hint = this.scene.add
-      .text(w / 2, h / 2 + 146, "Press 1, 2, or 3", {
-        fontFamily: fonts.body,
-        fontSize: "16px",
-        color: colors.mute,
-      })
+      .text(
+        w / 2,
+        h / 2 + 146,
+        touchScreen ? "Tap a power" : "Press 1, 2, or 3",
+        {
+          fontFamily: fonts.body,
+          fontSize: "16px",
+          color: colors.mute,
+        }
+      )
       .setOrigin(0.5)
       .setScrollFactor(0);
     objects.push(hint);
